@@ -1,55 +1,52 @@
 
-import java.util.ArrayDeque;
-import java.util.Queue;
-
 class Solution {
     
-    public int solution(String begin, String target, String[] words) {
+    
+	int answer;
+	boolean[] isVisited;
+	String[] words;
+	int strLen;
+	String target;
 
-		boolean[] isVisited = new boolean[words.length];
-		boolean[] isFinished = new boolean[begin.length()];
+	public int solution(String begin, String target, String[] words) {
 
-		for (int i = 0; i < isFinished.length; i++) {
-			if (begin.charAt(i) == target.charAt(i)) {
-				isFinished[i] = true;
-			}
+		this.target = target;
+		this.strLen = begin.length();
+		this.words = words;
+		this.isVisited = new boolean[words.length];
+		this.answer = 51;
+
+		dfs(begin, 0, 0);
+
+		return answer >= 51 ? 0 : answer;
+	}
+
+	public void dfs(String now, int depth, int count) {
+
+		if (now.equals(target)) {
+			answer = Math.min(answer, count);
 		}
 
-		Queue<String> queue = new ArrayDeque<>();
-		queue.add(begin);
+		for (int i = 0; i < words.length; i++) {
+			if (!isVisited[i] && isDiffALetter(now, words[i])) {
+				isVisited[i] = true;
+				dfs(words[i], depth + 1, count + 1);
+				isVisited[i] = false;
+			}
+		}
+	}
 
-		int answer = 0;
-		while (!queue.isEmpty()) {
-			queue.remove();
-			loop1:
-			for (int i = 0; i < words.length; i++) {
-				if (!isVisited[i]) {
-					int diff = 0;
-					int finIdx = -1;
-					for (int j = 0; j < isFinished.length; j++) {
-
-						if (words[i].charAt(j) == target.charAt(j)) {
-							if (!isFinished[j]) {
-								diff += 1;
-								finIdx = j;
-							}
-						} else if (isFinished[j]) {
-							isVisited[i] = true;
-							continue loop1;
-						}
-					}
-					if (diff == 1) {
-						isFinished[finIdx] = true;
-						queue.add(words[i]);
-						answer += 1;
-						// System.out.printf("#%d >> %s\n", answer, words[i]);
-						if (words[i].equals(target)) {
-							return answer;
-						}
-					}
+	public boolean isDiffALetter(String str1, String str2) {
+		int diff = 0;
+		for (int i = 0; i < strLen; i++) {
+			if (str1.charAt(i) != str2.charAt(i)) {
+				diff += 1;
+				if (diff > 1) {
+					break;
 				}
 			}
 		}
-		return 0;
+		return diff == 1 ? true : false;
 	}
+    
 }
