@@ -1,63 +1,25 @@
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Queue;
+import java.util.*;
 
 
 class Solution {
-    
     public int solution(int[] cards) {
-		boolean[][] isVisit = new boolean[cards.length + 1][cards.length + 1];
+        int n = cards.length;
+        boolean[] visited = new boolean[n];
+        List<Integer> groups = new ArrayList<>();
 
-		int maxIdx = -1;
-		int maxNum = 0;
-		int maxNum2 = 0;
-
-		for (int i = 1; i <= cards.length; i++) {
-			Queue<Integer> queue = new ArrayDeque<>();
-			queue.add(i);
-			int tmp = 0;
-			while (!queue.isEmpty()) {
-				int n = queue.poll();
-				tmp += 1;
-				if (!isVisit[cards[n - 1]][i]) {
-					queue.add(cards[n - 1]);
-					isVisit[cards[n - 1]][i] = true;
-				}
-			}
-			if (tmp > maxNum) {
-				maxNum = tmp;
-				maxIdx = i;
-			}
-		}
-
-		for (int i = 1; i <= cards.length; i++) {
-			if (isVisit[i][maxIdx] || maxIdx == i) {
-				continue;
-			}
-
-			boolean[] isVisitTmp = Arrays.copyOf(isVisit[maxIdx], cards.length + 1);
-			Queue<Integer> queue = new ArrayDeque<>();
-			queue.add(i);
-			int tmp = 0;
-			while (!queue.isEmpty()) {
-				int n = queue.poll();
-				tmp += 1;
-				if (!isVisitTmp[cards[n - 1]]) {
-					queue.add(cards[n - 1]);
-					isVisitTmp[cards[n - 1]] = true;
-				}
-			}
-			if (tmp > maxNum2) {
-				maxNum2 = tmp;
-			}
-		}
-
-		if (maxNum <= 0 || maxNum2 <= 0) {
-			return 0;
-		} else {
-			return (maxNum - 1) * (maxNum2 - 1);
-		}
-	}
+        for (int i = 0; i < n; i++) {
+            int now = i;
+            int cnt = 0;
+            while (!visited[now]) {
+                cnt++;
+                visited[now] = true;
+                now = cards[now] - 1;
+            }
+            groups.add(cnt);
+        }
+        Collections.sort(groups, Comparator.reverseOrder());
+        return (groups.size() == 1) ? 0 : groups.get(0) * groups.get(1);
+    }
 }
 
 /*
