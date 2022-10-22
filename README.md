@@ -1,4 +1,3 @@
-# BOJ-submissions
+# algorithm
 
-백준 알고리즘 문제 Github 저장
- 
+> 알고리즘 문제 Github 저장
