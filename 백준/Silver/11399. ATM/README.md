@@ -1,10 +1,10 @@
-# [Silver III] ATM - 11399 
+# [Silver IV] ATM - 11399 
 
 [문제 링크](https://www.acmicpc.net/problem/11399) 
 
 ### 성능 요약
 
-메모리: 20620 KB, 시간: 280 ms
+메모리: 14432 KB, 시간: 132 ms
 
 ### 분류
 
