@@ -1,44 +1,46 @@
 class Solution {
 
-	int answer = 0;
-	int target = 0;
-	int[] numbers;
-	boolean[] isVisit;
+    
+    public static boolean[] isVisit;
+    public static int[] numbers;
+    public static int result;
+    public static int target;
 
-	public int solution(int[] numbers, int target) {
-		this.answer = 0;
-		this.target = target;
-		this.numbers = numbers;
-		this.isVisit = new boolean[numbers.length];
+    public int solution(int[] numbers, int target) {
 
-		int res = 0;
-		for (int i : numbers) {
-			res += i;
-		}
-		dfs(-1, 0, res);
-		return answer;
-	}
+        this.numbers = numbers;
+        this.target = target;
+        this.isVisit = new boolean[numbers.length];
+        this.result = 0;
 
-	public void dfs(int idx, int depth, int res) {
+        dfs(0, 0, 0);
 
-		if (depth >= numbers.length) {
-			return;
-		}
+        return this.result;
+    }
 
-		if (depth > 0) {
-			res = res - (2 * numbers[idx]);
+    public static void dfs(int idx, int depth, int sum) {
+        int tmp = sum;
+        for (int i = 0; i < numbers.length; i++) {
+            if (!isVisit[i]) {
+                tmp -= numbers[i];
+            }
+        }
+        if (target == tmp) {
+            result += 1;
+        }
 
-			if (res == target) {
-				answer += 1;
-			}
-		}
+        if (depth >= numbers.length) {
+            return;
+        }
 
-		for (int i = 0; i < numbers.length; i++) {
-			if (!isVisit[i] && i > idx) {
-				isVisit[i] = true;
-				dfs(i, depth + 1, res);
-				isVisit[i] = false;
-			}
-		}
-	}
+        for (int i = 0; i < numbers.length; i++) {
+            if (!isVisit[i] && i >= idx) {
+                isVisit[i] = true;
+                dfs(i, depth + 1, sum + numbers[i]);
+                isVisit[i] = false;
+            }
+        }
+    }
+    
+    
 }
