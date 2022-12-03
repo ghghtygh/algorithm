@@ -5,37 +5,27 @@ import java.util.Queue;
 class Solution {
     public int solution(int n, int[][] computers) {
 
-		int answer = 0;
-		boolean[] isVisit = new boolean[n];
-		Queue<Integer> queue = new ArrayDeque<>();
-		for (int i = 0; i < n; i++) {
+        boolean[] isVisit = new boolean[n];
+        Queue<Integer> queue1 = new ArrayDeque<>();
 
-			if (!isVisit[i]) {
+        int answer = 0;
+        for (int t = 0; t < n; t++) {
 
-				queue.add(i);
-				answer += 1;
+            if (!isVisit[t]) {
+                answer += 1;
+                queue1.add(t);
+            }
 
-				// int prev = -1;
-				while (!queue.isEmpty()) {
-
-					int now = queue.poll();
-					isVisit[now] = true;
-
-					// if (prev >= 0) {
-					// 	System.out.println("#" + answer + " : " + prev + " -> " + now + " 방문");
-					// }
-
-					for (int j = 0; j < computers[now].length; j++) {
-						if (computers[j][now] == 1 && now != j && !isVisit[j]) {
-							queue.add(j);
-						}
-					}
-					// prev = now;
-				}
-			}
-
-		}
-
-		return answer;
-	}
+            while (!queue1.isEmpty()) {
+                int next = queue1.remove();
+                isVisit[next] = true;
+                for (int i = 0; i < n; i++) {
+                    if (computers[next][i] == 1 && i != next && !isVisit[i]) {
+                        queue1.add(i);
+                    }
+                }
+            }
+        }
+        return answer;
+    }
 }
